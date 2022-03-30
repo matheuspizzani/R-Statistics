@@ -1,0 +1,53 @@
+readxlx -> Importação de dados do Excel
+lmtest -> testes para modelos de regressão linear múltipla
+sandwich -> estimações robustas para matrizes de covariâncas
+orcutt -> estimação de Cochrane-Orcutt
+prais -> estimação de Prais-Winsten
+car -> testes para modelos de regressão linear múltipla (fator inflacionário da variância)
+
+FUNÇÕES:
+
+Instalação de pacotes: install.packages("nome do pacote")
+
+Carregar pacotes instalados: library(nome do pacote)
+
+Plotar figuras: plot(dados)
+
+Estimar modelo de regressão: nome do modelo <- lm (y ~ x1 + x2 + ... +xn, data = nome dos dados) -> Com intercepto
+                             nome do modelo <- lm (y ~ 0 + x1 + x2 + ... +xn, data = nome dos dados) -> Sem intercepto
+                         
+Apresentar estimativas e estatísticas de um modelo de regressão: summary(nome do modelo)
+
+Intervalo de confiança para parâmetros: confint (nome do modelo, conf.level = 0.95) -> Ajustar IC de acordo com o interesse do autor
+
+Resíduos de um modelo: nome do resíduo -> nomedomodelo$residuals
+
+Valores estimados de um modelo: nome dos valores -> nomedomodelo$fitted.values
+
+R2 de um modelo de regressão: R2 -> summary(nomedomodelo)$r.sq
+
+P-valor de uma estatística de teste bicaudal: pvalort -> 2 * (1-pt(abs(estatistica), gl)) -> gl são os graus de liberdade
+
+P-valor de uma estatística F: pvalorF -> 1 - pf(estatistica, glnum, gldeno) -> gl numerador e denominador
+
+P-valor de uma estatística X2: pvalorChi -> 1 - pchisq(estatistica, gl) -> gl são os graus de liberdade
+
+Obter número de linhas/colunas de uma matriz ou vetor: nlinhas -> nrows(matrizdados) / ncolunas -> ncol(matrizdados)
+
+Calcular estatísticas robustas a heterocedasticidade de um modelo: coeftest (nomedomodelo, vcov. = vcovHC(modl, type = "HC1"))
+
+Estimar um modelo de regressão com MQ ponderados: modeloMQP -> lm( y ~ x1 + x2 + ... + xn, data = Dados, weights = pesos)
+
+Somar elementos de um vetor ou matriz: soma -> sum(matrizdedados)
+
+Estimar um modelo utilizando a té´cnica de Cochrane-Orcutt: modeloCO -> cochrane.orcutt(nomedomodelo)
+
+Estimar um modelo utilizando a técnica de Prais-Winsten: modeloPW -> prais.winsten( y ~ x1 + x2 + ... + xn, data = dados)
+
+Calcular matriz de covariâncias robusta de Newey-West: matrizCov -> Newey-West(nomedomodelo)
+
+Calcular correlações de uma matriz de dados: Correls -> cor(matrizdedados)
+
+Determinar os fatores inflacionários da variância de um modelo de regressão: FIVs -> vif(nomemodelo)
+
+Calcular estatística correlação serial Durbin-Watson: durbinWatsonTest(nomedomodelo)
