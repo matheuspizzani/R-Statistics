@@ -1,0 +1,62 @@
+
+
+
+COLETA DE DADOS
+# bibliotecas
+install.packages('tidyverse') # repita para os outros pacotes 
+
+library(tidyverse)
+library(rbcb)
+library(RcppRoll)
+library(ggrepel)
+
+# coletar os dados
+ 
+# codigo do site do BCB guardada dentro do objeto ipca
+
+ipca = list('IPCA' = 433) 
+
+# funcao para coletar essa serie de dados
+
+ipca = get_series(ipca, start_date = '2007-06-30') 
+ 
+# funcao para jogar em decimal e para fazer o acumulado em 12 meses
+
+ipca12M = ipca %>%
+      mutate(across(!date, (function(x)1+x/100))) %>%    
+      mutate(across(!date, (function(x) (roll_prod(x, n=12, align = 'right',
+                                                   fill = NA)-1)*100)))
+ 
+# mostrar os ultimos dados
+tail(ipca12M)
+
+GERAR GRÁFICOS:
+
+- Variação Mensal
+
+ipca %>%
+  ggplot(aes(x = date, y = IPCA))+ #eixo x e y
+  geom_line(col = 'darkblue', size = 1)+ #grafico linha
+  theme_light()+ #tema do grafico
+  labs(title = 'IPCA mensal %')+ #titulo grafico
+  geom_label_repel(label = round(tail(ipca$IPCA,1),2), #incluindo o valor na img
+                   nudge_x = 1,
+                   nudge_y = 0,
+                   data = tail(ipca,1),
+                   color ='white',
+                   fill = 'red')
+                   
+- Acumulado em 12 meses
+
+ipca12M %>%
+  ggplot(aes(x = date, y = IPCA))+
+  geom_line(col = 'darkblue', size = 1)+
+  theme_economist()+ #tema grafico
+  labs(title = 'IPCA mensal',
+       subtitle = 'Acumulado 12 meses')+
+  geom_label_repel(label = round(tail(ipca12M$IPCA,1),2),
+                   nudge_x = 1,
+                   nudge_y = 0,
+                   data = tail(ipca12M,1),
+                   color ='white',
+                   fill = 'red')
